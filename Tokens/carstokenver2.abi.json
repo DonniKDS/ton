@@ -1,0 +1,59 @@
+{
+	"ABI version": 2,
+	"version": "2.1",
+	"header": ["time", "expire"],
+	"functions": [
+		{
+			"name": "constructor",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "createToken",
+			"inputs": [
+				{"name":"carModel","type":"string"},
+				{"name":"carWeight","type":"int256"},
+				{"name":"carMaxSpeed","type":"int256"},
+				{"name":"carPrice","type":"int256"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "putTokenForSale",
+			"inputs": [
+				{"name":"tokenId","type":"uint256"},
+				{"name":"tokenPrice","type":"int256"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "tokenOnSaleInfo",
+			"inputs": [
+				{"name":"tokenId","type":"uint256"}
+			],
+			"outputs": [
+				{"name":"carModel","type":"string"},
+				{"name":"carWeight","type":"int256"},
+				{"name":"carMaxSpeed","type":"int256"},
+				{"name":"carPrice","type":"int256"},
+				{"name":"price","type":"int256"}
+			]
+		}
+	],
+	"data": [
+	],
+	"events": [
+	],
+	"fields": [
+		{"name":"_pubkey","type":"uint256"},
+		{"name":"_timestamp","type":"uint64"},
+		{"name":"_constructorFlag","type":"bool"},
+		{"components":[{"name":"carModel","type":"string"},{"name":"carWeight","type":"int256"},{"name":"carMaxSpeed","type":"int256"},{"name":"carPrice","type":"int256"}],"name":"tokensArr","type":"tuple[]"},
+		{"components":[{"components":[{"name":"carModel","type":"string"},{"name":"carWeight","type":"int256"},{"name":"carMaxSpeed","type":"int256"},{"name":"carPrice","type":"int256"}],"name":"token","type":"tuple"},{"name":"price","type":"int256"},{"name":"isSale","type":"bool"}],"name":"tokenWrappersArr","type":"tuple[]"},
+		{"name":"tokensToOwners","type":"map(uint256,uint256)"}
+	]
+}
