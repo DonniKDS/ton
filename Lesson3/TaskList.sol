@@ -15,6 +15,12 @@ contract TaskList {
         bool isDone;
     }
 
+    modifier checkOwnerAndAccept {
+        require(msg.pubkey() == tvm.pubkey(), 102);
+        tvm.accept();
+        _;
+    }
+
     uint8 tasksLength = 0;
     uint8 key = 0;
     mapping (uint8=>task) tasks;
@@ -25,7 +31,7 @@ contract TaskList {
         key++;
     }
 
-    function openTasks() public returns (uint8) {
+    function openTasks() public view returns (uint8) {
         uint8 numberOfOpenTasks = 0;
         for(uint8 i = 0; i < tasksLength; i++) {
             if (tasks[i].isDone == false) {
@@ -35,20 +41,20 @@ contract TaskList {
         return numberOfOpenTasks;
     }
 
-    function getTasks() public returns (mapping (uint8=>task)) {
+    function getTasks() public view returns (mapping (uint8=>task)) {
         return tasks;
     }
 
-    function getTask(uint8 key) public returns (task) {
+    function getTask(uint8 key) public view returns (task) {
         return tasks[key];
     }
 
-    function deleteTask(uint8 key) public {
+    function deleteTask(uint8 key) public checkOwnerAndAccept {
         delete tasks[key];
         tasksLength--;
     }
 
-    function taskIsDone(uint8 key) public {
+    function taskIsDone(uint8 key) public checkOwnerAndAccept {
         tasks[key].isDone = true;
     }
 }
