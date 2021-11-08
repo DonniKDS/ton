@@ -1,0 +1,99 @@
+{
+	"ABI version": 2,
+	"version": "2.1",
+	"header": ["time", "expire"],
+	"functions": [
+		{
+			"name": "attack",
+			"inputs": [
+				{"name":"target","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getAttackPower",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"int256"}
+			]
+		},
+		{
+			"name": "getDefense",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"int256"}
+			]
+		},
+		{
+			"name": "destruction",
+			"inputs": [
+				{"name":"a","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "takeTheAttack",
+			"inputs": [
+				{"name":"damage","type":"int256"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "setHealth",
+			"inputs": [
+				{"name":"h","type":"int256"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getHealth",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"int256"}
+			]
+		},
+		{
+			"name": "constructor",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "baseAddress",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"baseAddress","type":"address"}
+			]
+		},
+		{
+			"name": "myBase",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"myBase","type":"address"}
+			]
+		}
+	],
+	"data": [
+	],
+	"events": [
+	],
+	"fields": [
+		{"name":"_pubkey","type":"uint256"},
+		{"name":"_timestamp","type":"uint64"},
+		{"name":"_constructorFlag","type":"bool"},
+		{"name":"health","type":"int256"},
+		{"name":"destroyed","type":"bool"},
+		{"name":"baseAddress","type":"address"},
+		{"name":"myBase","type":"address"}
+	]
+}
