@@ -7,5 +7,5 @@ struct Purchase {
     uint32 count;
     uint32 time;
     bool isBuy;
-    int price;
+    uint price;
 }

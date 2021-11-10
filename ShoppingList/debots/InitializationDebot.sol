@@ -13,7 +13,8 @@ import '../contracts/HasConstructorWithPubKey.sol';
 import '../base/Menu.sol';
 import '../interfaces/ShoppingListInterface.sol';
 
-abstract contract InitializationDebot is Debot, Transactable {
+abstract contract InitializationDebot is Debot {
+    bytes debotIcon;
 
     TvmCell shoppingCode;
     address shoppingAddress;
@@ -24,17 +25,33 @@ abstract contract InitializationDebot is Debot, Transactable {
 
     uint32 INITIAL_BALANCE =  200000000;
 
-    function start() public override virtual {
+    function start() public override {
         Terminal.input(tvm.functionId(savePublicKey),"Введите ваш открытый ключ",false);
     }
 
-    function setTodoCode(TvmCell code) public virtual {
+    function getDebotInfo() public functionID(0xDEB) override view returns(
+        string name, string version, string publisher, string key, string author,
+        address support, string hello, string language, string dabi, bytes icon
+    ) {
+        name = "Shopping List";
+        version = "0.2.0";
+        publisher = "TON Labs";
+        key = "Shopping list manager";
+        author = "DonniKDS";
+        support = address.makeAddrStd(0, 0x66e01d6df5a8d7677d9ab2daf7f258f1e2a7fe73da5320300395f99e01dc3b5f);
+        hello = "Hi, i'm a Shopping List DeBot.";
+        language = "ru";
+        dabi = m_debotAbi.get();
+        icon = debotIcon;
+    }
+
+    function setTodoCode(TvmCell code) public {
         require(msg.pubkey() == tvm.pubkey(), 101);
         tvm.accept();
         shoppingCode = code;
     }
 
-    function savePublicKey(string value) public virtual {
+    function savePublicKey(string value) public {
         (uint res, bool status) = stoi("0x"+value);
         if (status) {
             userPubKey = res;
@@ -48,7 +65,7 @@ abstract contract InitializationDebot is Debot, Transactable {
         }
     }
 
-    function checkStatus(int8 acc_type) public virtual {
+    function checkStatus(int8 acc_type) public {
         if (acc_type == 1) {
             _getInfo(tvm.functionId(setInfo));
         } else if (acc_type == -1)  {
@@ -64,7 +81,7 @@ abstract contract InitializationDebot is Debot, Transactable {
         }
     }
 
-    function checkIfStatusIs0(int8 acc_type) public virtual {
+    function checkIfStatusIs0(int8 acc_type) public {
         if (acc_type ==  0) {
             deploy();
         } else {
@@ -91,7 +108,7 @@ abstract contract InitializationDebot is Debot, Transactable {
         }();
     }
 
-    function creditAccount(address value) public virtual {
+    function creditAccount(address value) public {
         msigAddress = value;
         optional(uint256) pubkey = 0;
         TvmCell empty;
@@ -107,7 +124,7 @@ abstract contract InitializationDebot is Debot, Transactable {
         }(shoppingAddress, INITIAL_BALANCE, false, 3, empty);
     }
 
-    function deploy() internal virtual view {
+    function deploy() internal view {
             TvmCell image = tvm.insertPubkey(shoppingCode, userPubKey);
             optional(uint256) none;
             TvmCell deployMsg = tvm.buildExtMsg({
@@ -125,26 +142,30 @@ abstract contract InitializationDebot is Debot, Transactable {
             tvm.sendrawmsg(deployMsg, 1);
     }
 
-    function waitBeforeDeploy() public virtual {
+    function waitBeforeDeploy() public {
         Sdk.getAccountType(tvm.functionId(checkIfStatusIs0), shoppingAddress);
     }
 
-    function onSuccess() public virtual view {
+    function onSuccess() public view {
         _getInfo(tvm.functionId(setInfo));
     }
 
-    function onError(uint32 sdkError, uint32 exitCode) public virtual {
+    function onError(uint32 sdkError, uint32 exitCode) public {
         Terminal.print(0, format("Operation failed. sdkError {}, exitCode {}", sdkError, exitCode));
         _menu();
     }
 
-    function onErrorRepeatDeploy(uint32 sdkError, uint32 exitCode) public virtual view {
+    function onErrorRepeatDeploy(uint32 sdkError, uint32 exitCode) public view {
         deploy();
     }
 
-    function onErrorRepeatCredit(uint32 sdkError, uint32 exitCode) public virtual {
+    function onErrorRepeatCredit(uint32 sdkError, uint32 exitCode) public {
         Terminal.print(0, format("Operation failed. sdkError {}, exitCode {}", sdkError, exitCode));
         creditAccount(msigAddress);
+    }
+
+    function getRequiredInterfaces() public view override returns (uint256[] interfaces) {
+        return [Terminal.ID, Menu.ID, AddressInput.ID];
     }
 
     function _menu() internal virtual;
