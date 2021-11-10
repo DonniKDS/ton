@@ -35,12 +35,12 @@ contract ShoppingList is ShoppingListInterface {
         delete purchases[id];
     }
 
-    function getPurchase() public view override returns (Purchase[] purchasesArray) {
+    function getPurchases() public view override returns (Purchase[] purchasesArray) {
         string name;
         uint32 count;
         uint32 time;
         bool isBuy;
-        int price;
+        uint price;
 
         for((uint32 id, Purchase purchase) : purchases) {
             name = purchase.name;
@@ -55,7 +55,7 @@ contract ShoppingList is ShoppingListInterface {
     function getInfo() public view override returns (PurchasesInfo info) {
         uint32 purchasePaidCount;
         uint32 purchaseNotPaidCount;
-        int totalPaidForAllTime;
+        uint totalPaidForAllTime;
 
         for((, Purchase purchase) : purchases) {
             if  (purchase.isBuy) {
@@ -68,7 +68,7 @@ contract ShoppingList is ShoppingListInterface {
         info = PurchasesInfo(purchasePaidCount, purchaseNotPaidCount, totalPaidForAllTime);
     }
 
-    function buy(uint32 id, int price) public override {
+    function buy(uint32 id, uint price) public override {
          purchases[id].isBuy = true;
          purchases[id].price = price;
     }

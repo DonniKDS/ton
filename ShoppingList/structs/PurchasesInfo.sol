@@ -4,5 +4,5 @@ pragma AbiHeader expire;
 struct PurchasesInfo {
     uint32 purchasePaidCount;
     uint32 purchaseNotPaidCount;
-    int totalPaidForAllTime;
+    uint totalPaidForAllTime;
 }

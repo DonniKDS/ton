@@ -7,7 +7,7 @@ import '../structs/PurchasesInfo.sol';
 interface ShoppingListInterface {
     function createPurchase(string name, uint32 count) external;
     function deletePurchase(uint32 id) external;
-    function getPurchase() external view returns (Purchase[] purchasesArray);
+    function getPurchases() external view returns (Purchase[] purchasesArray);
     function getInfo() external view returns (PurchasesInfo info);
-    function buy(uint32 id, int price) external;
+    function buy(uint32 id, uint price) external;
 }
